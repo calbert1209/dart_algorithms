@@ -1,5 +1,5 @@
-import 'package:dart_algorithms/dart_algorithms.dart' as dart_algorithms;
+import 'benchmark_union_find.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${dart_algorithms.calculate()}!');
+  benchmarkUnionFind();
 }
