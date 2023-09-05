@@ -1,0 +1,6 @@
+{
+    "image": "dart:latest",
+    "containerEnv": {
+        "PUB_CACHE":"${containerWorkspaceFolder}/.pub-cache"
+    }
+}

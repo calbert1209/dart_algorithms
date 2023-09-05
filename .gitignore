@@ -4,3 +4,7 @@
 
 # Conventional directory for build output.
 build/
+
+
+# local pub cache, available in dev container
+.pub-cache/
