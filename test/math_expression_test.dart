@@ -31,6 +31,34 @@ void main() {
           reason: '`weak` should be true',
         );
       });
+
+      test('fromOpString pseudo constructor "Add"', () {
+        final strongAdd = Operation.fromOpString('Add');
+        expect(
+          strongAdd.type,
+          equals(OperationType.add),
+          reason: 'should parse correct type',
+        );
+        expect(
+          strongAdd.weak,
+          equals(false),
+          reason: 'should parse as strong operation',
+        );
+      });
+
+      test('fromOpString pseudo constructor "sub"', () {
+        final weakSub = Operation.fromOpString('sub');
+        expect(
+          weakSub.type,
+          equals(OperationType.subtract),
+          reason: 'should parse correct type',
+        );
+        expect(
+          weakSub.weak,
+          equals(true),
+          reason: 'should parse as strong operation',
+        );
+      });
     });
 
     group('instance methods', () {

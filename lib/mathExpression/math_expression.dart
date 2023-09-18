@@ -49,7 +49,30 @@ class Operation {
       case OperationType.subtract:
         return weak ? OperationPriority.low : OperationPriority.high;
       default:
-        throw Exception('invalid type');
+        throw Exception('invalid type: $type');
+    }
+  }
+
+  static Operation fromOpString(String op) {
+    switch (op) {
+      case 'Mul':
+        return Operation(OperationType.multiply, weak: false);
+      case 'Div':
+        return Operation(OperationType.divide, weak: false);
+      case 'Add':
+        return Operation(OperationType.add, weak: false);
+      case 'Sub':
+        return Operation(OperationType.subtract, weak: false);
+      case 'mul':
+        return Operation(OperationType.multiply, weak: true);
+      case 'div':
+        return Operation(OperationType.divide, weak: true);
+      case 'add':
+        return Operation(OperationType.add, weak: true);
+      case 'sub':
+        return Operation(OperationType.subtract, weak: true);
+      default:
+        throw Exception('Invalid op string: "$op"');
     }
   }
 }
