@@ -76,3 +76,35 @@ class Operation {
     }
   }
 }
+
+class SortableOperation {
+  final Operation op;
+  final int sequencelIndex;
+
+  SortableOperation(this.op, this.sequencelIndex);
+
+  int compareTo(SortableOperation other) {
+    return op.priority.index - other.op.priority.index;
+  }
+}
+
+class MathExpression {
+  final List<int> values;
+  final List<SortableOperation> ops;
+
+  MathExpression._(this.values, this.ops);
+
+  static _sortOps(List<Operation> ops) {
+    return List<SortableOperation>.generate(
+      ops.length,
+      (index) => SortableOperation(ops[index], index),
+    )..sort(
+        (a, b) => b.compareTo(b),
+      );
+  }
+
+  static MathExpression create(List<int> values, List<Operation> ops) {
+    final sortedOps = _sortOps(ops);
+    return MathExpression._(values, sortedOps);
+  }
+}
