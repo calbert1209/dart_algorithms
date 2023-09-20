@@ -101,4 +101,58 @@ void main() {
       });
     });
   });
+
+  group('SortableOperation', () {
+    test('compareTo', () {
+      final strongMultiply = SortableOperation(
+        Operation(OperationType.multiply),
+        0,
+      );
+      final strongAdd = SortableOperation(
+        Operation(OperationType.add),
+        1,
+      );
+      final weakAdd = SortableOperation(
+        Operation(OperationType.add, weak: true),
+        2,
+      );
+
+      expect(strongMultiply.compareTo(strongMultiply), equals(0));
+      expect(strongMultiply.compareTo(strongAdd), greaterThan(0));
+      expect(weakAdd.compareTo(strongAdd), lessThan(0));
+    });
+  });
+
+  group('MathExpression', () {
+    group('create', () {
+      final strongMultiply = Operation(OperationType.multiply);
+      final strongAdd = Operation(OperationType.add);
+      final weakAdd = Operation(OperationType.add, weak: true);
+      final ops = [weakAdd, strongMultiply, strongAdd];
+
+      final mathExp = MathExpression.create([1, 2, 3, 4], ops);
+
+      final expectedOrder = [
+        strongMultiply,
+        strongAdd,
+        weakAdd,
+      ];
+      final expectedSequenceIndices = [1, 2, 0];
+
+      for (var i = 0; i < expectedOrder.length; i++) {
+        final currentOp = mathExp.ops[i];
+        test(
+          'ops property should be sorted from highest to lowest priority',
+          () {
+            expect(currentOp.op.type, equals(expectedOrder[i].type));
+            expect(currentOp.op.weak, equals(expectedOrder[i].weak));
+            expect(
+              currentOp.sequencelIndex,
+              equals(expectedSequenceIndices[i]),
+            );
+          },
+        );
+      }
+    });
+  });
 }

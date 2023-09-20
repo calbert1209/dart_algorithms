@@ -99,7 +99,7 @@ class MathExpression {
       ops.length,
       (index) => SortableOperation(ops[index], index),
     )..sort(
-        (a, b) => b.compareTo(b),
+        (a, b) => b.compareTo(a),
       );
   }
 
