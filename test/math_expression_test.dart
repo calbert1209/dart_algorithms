@@ -64,7 +64,7 @@ void main() {
     group('instance methods', () {
       test('toOperationString', () {
         final mul = Operation(OperationType.multiply);
-        final stringified = mul.toOperationString(6, 7);
+        final stringified = mul.toOperationString(6.toString(), 7.toString());
         expect(
           stringified,
           equals('( 6 * 7 )'),
@@ -147,12 +147,82 @@ void main() {
             expect(currentOp.op.type, equals(expectedOrder[i].type));
             expect(currentOp.op.weak, equals(expectedOrder[i].weak));
             expect(
-              currentOp.sequencelIndex,
+              currentOp.sequenceIndex,
               equals(expectedSequenceIndices[i]),
             );
           },
         );
       }
+    });
+
+    group('evaluate', () {
+      test('basic (1)', () {
+        final ops = [
+          Operation.fromOpString('add'),
+          Operation.fromOpString('Mul'),
+          Operation.fromOpString('Add'),
+        ];
+
+        // 1 + ( ( 2 * 3 ) + 4 ) = 11
+        final mathExp = MathExpression.create([1, 2, 3, 4], ops);
+
+        expect(mathExp.evaluate(), equals(11));
+      });
+
+      test('basic (2)', () {
+        final ops = [
+          Operation.fromOpString('Add'),
+          Operation.fromOpString('add'),
+          Operation.fromOpString('Mul'),
+        ];
+
+        // (1 + 2) + (3 * 4) = 15
+        final mathExp = MathExpression.create([1, 2, 3, 4], ops);
+
+        expect(mathExp.evaluate(), equals(15));
+      });
+
+      test('basic (3)', () {
+        final ops = [
+          Operation.fromOpString('Div'),
+          Operation.fromOpString('mul'),
+          Operation.fromOpString('Mul'),
+        ];
+
+        // (1 / 2) * (3 * 4) = 6.0
+        final mathExp = MathExpression.create([1, 2, 3, 4], ops);
+
+        expect(mathExp.evaluate(), equals(6.0));
+      });
+
+      test('should return infinity', () {
+        final ops = [
+          Operation.fromOpString('div'),
+          Operation.fromOpString('Mul'),
+          Operation.fromOpString('Sub'),
+        ];
+
+        // 1 / ((2 * 3) - 6) = 1 / 0
+        final mathExp = MathExpression.create([1, 2, 3, 6], ops);
+
+        expect(mathExp.evaluate(), equals(double.infinity));
+      });
+    });
+
+    group('toExpressionString', () {
+      test('should return expression string', () {
+        final ops = [
+          Operation.fromOpString('Div'),
+          Operation.fromOpString('mul'),
+          Operation.fromOpString('Mul'),
+        ];
+
+        // (1 / 2) * (3 * 4) = 6.0
+        final mathExp = MathExpression.create([1, 2, 3, 4], ops);
+
+        expect(
+            mathExp.toExpressionString(), equals('( ( 1 / 2 ) * ( 3 * 4 ) )'));
+      });
     });
   });
 }

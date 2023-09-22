@@ -1,3 +1,5 @@
+import 'dart:math';
+
 enum OperationType {
   multiply,
   divide,
@@ -32,11 +34,11 @@ class Operation {
 
   Operation(this.type, {this.weak = false});
 
-  toOperationString(dynamic a, dynamic b) {
+  String toOperationString(dynamic a, dynamic b) {
     return '( ${a.toString()} ${operandSymbol[type]} ${b.toString()} )';
   }
 
-  operate(num a, num b) {
+  num operate(num a, num b) {
     return mathOp[type]!(a, b);
   }
 
@@ -79,9 +81,9 @@ class Operation {
 
 class SortableOperation {
   final Operation op;
-  final int sequencelIndex;
+  final int sequenceIndex;
 
-  SortableOperation(this.op, this.sequencelIndex);
+  SortableOperation(this.op, this.sequenceIndex);
 
   int compareTo(SortableOperation other) {
     return op.priority.index - other.op.priority.index;
@@ -106,5 +108,39 @@ class MathExpression {
   static MathExpression create(List<int> values, List<Operation> ops) {
     final sortedOps = _sortOps(ops);
     return MathExpression._(values, sortedOps);
+  }
+
+  T _evaluate<T>(List<T> seedValues,
+      T Function(T a, T b) Function(Operation op) getAction) {
+    final results = List<T>.from(seedValues);
+    for (var sortedOpIndex = 0; sortedOpIndex < ops.length; sortedOpIndex++) {
+      final currentOp = ops[sortedOpIndex];
+      final yOpSecondAfterInitialZOp = sortedOpIndex == 1 &&
+          currentOp.sequenceIndex == 2 &&
+          ops[0].sequenceIndex == 2;
+      final aIndex = yOpSecondAfterInitialZOp
+          ? 1
+          : max(0, currentOp.sequenceIndex - sortedOpIndex);
+      final bIndex = aIndex + 1;
+      final action = getAction(currentOp.op);
+      results[aIndex] = action(
+        results[aIndex],
+        results[bIndex],
+      );
+      results.removeAt(bIndex);
+    }
+
+    return results[0];
+  }
+
+  num evaluate() {
+    final results = List<num>.from(values);
+    return _evaluate(results, (op) => op.operate);
+  }
+
+  String toExpressionString() {
+    final results =
+        List.generate(values.length, ((index) => values[index].toString()));
+    return _evaluate(results, (op) => op.toOperationString);
   }
 }
