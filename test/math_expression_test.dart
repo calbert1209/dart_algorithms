@@ -195,6 +195,19 @@ void main() {
         expect(mathExp.evaluate(), equals(6.0));
       });
 
+      test('basic (4)', () {
+        final ops = [
+          Operation.fromOpString('mul'),
+          Operation.fromOpString('Sub'),
+          Operation.fromOpString('Mul'),
+        ];
+
+        // (4 * (1 - (2 * 3))) = -20
+        final mathExp = MathExpression.create([4, 1, 3, 2], ops);
+
+        expect(mathExp.evaluate(), equals(-20));
+      });
+
       test('should return infinity', () {
         final ops = [
           Operation.fromOpString('div'),

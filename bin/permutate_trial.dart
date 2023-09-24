@@ -1,9 +1,48 @@
 import 'package:dart_algorithms/mathExpression/math_expression.dart';
 import 'package:dart_algorithms/permutation/permutate.dart';
 
-typedef Option = (int, String);
+typedef OptionDict = Map<num, List<String>>;
 
 bool isInteger(num value) => value is int || value == value.roundToDouble();
+
+void reportAnswers(OptionDict options) {
+  final sortedKeysByValueCount = options.keys.toList()
+    ..sort((a, b) {
+      final diff = options[b]!.length - options[a]!.length;
+      if (diff == 0) {
+        return (b - a).toInt();
+      }
+
+      return diff;
+    });
+
+  for (var key in sortedKeysByValueCount) {
+    print('::: $key (${options[key]!.length}) '.padRight(40, ':'));
+    for (var exp in options[key]!) {
+      print(exp.substring(2, 23));
+    }
+
+    print('');
+  }
+}
+
+void reportCounts(OptionDict options) {
+  final sortedKeysByValueCount = options.keys.toList()
+    ..sort((a, b) {
+      final diff = options[b]!.length - options[a]!.length;
+      if (diff == 0) {
+        return (b - a).toInt();
+      }
+
+      return diff;
+    });
+
+  print('::: questions '.padRight(40, ':'));
+  for (var key in sortedKeysByValueCount) {
+    print('$key: ${options[key]!.length} '.padLeft(2, ' '));
+  }
+  print('');
+}
 
 void main() {
   final valueP = Permutator([1, 2, 3, 4]);
@@ -21,33 +60,34 @@ void main() {
   final valueLists = valueP.permutate(4, pickOnce: true);
   final opsLists = opsP.permutate(3, pickOnce: false);
 
-  final options = List<Option>.empty(growable: true);
+  OptionDict options = {};
+
+  addOption(num value, String expression) {
+    if (!options.keys.contains(value)) {
+      options[value] = List<String>.empty(growable: true);
+    }
+
+    options[value]!.add(expression);
+  }
 
   for (var opsList in opsLists) {
     for (var valueList in valueLists) {
       final ops = opsList.map((e) => Operation.fromOpString(e)).toList();
+      // final priorities = ops.map((e) => e.priority.index).toList();
       final exp = MathExpression.create(valueList, ops);
 
       final evaluatedResult = exp.evaluate();
       final expressionString = exp.toExpressionString();
-      if (isInteger(evaluatedResult) &&
-          evaluatedResult.isFinite &&
-          !evaluatedResult.isNaN) {
-        options.add((evaluatedResult.toInt(), expressionString));
+      // print(
+      //     '${valueList.join(',')} ${opsList.join(',')} $evaluatedResult ${priorities.join(',')} $expressionString');
+      if (evaluatedResult.isFinite &&
+          !evaluatedResult.isNaN &&
+          evaluatedResult.toInt() == evaluatedResult) {
+        addOption(evaluatedResult, expressionString);
       }
     }
   }
 
-  print("=== Sorting... ====================");
-
-  final sortedOptions = options
-    ..sort((a, b) {
-      var (valueA, _) = a;
-      var (valueB, _) = b;
-      return (valueB - valueA).toInt();
-    });
-
-  for (var (value, expression) in sortedOptions) {
-    print('$expression = ${value.toInt()}');
-  }
+  reportCounts(options);
+  reportAnswers(options);
 }

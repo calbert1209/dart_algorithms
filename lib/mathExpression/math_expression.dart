@@ -113,11 +113,12 @@ class MathExpression {
   T _evaluate<T>(List<T> seedValues,
       T Function(T a, T b) Function(Operation op) getAction) {
     final results = List<T>.from(seedValues);
+    final isFirstOpZOp = ops[0].sequenceIndex == 2;
     for (var sortedOpIndex = 0; sortedOpIndex < ops.length; sortedOpIndex++) {
       final currentOp = ops[sortedOpIndex];
-      final yOpSecondAfterInitialZOp = sortedOpIndex == 1 &&
-          currentOp.sequenceIndex == 2 &&
-          ops[0].sequenceIndex == 2;
+      final is2ndOp = sortedOpIndex == 1;
+      final isYOp = currentOp.sequenceIndex == 1;
+      final yOpSecondAfterInitialZOp = is2ndOp && isYOp && isFirstOpZOp;
       final aIndex = yOpSecondAfterInitialZOp
           ? 1
           : max(0, currentOp.sequenceIndex - sortedOpIndex);
