@@ -13,12 +13,12 @@ typedef ValuesTuple = (int, int, int, int);
 typedef OpsTuple = (Operation, Operation, Operation);
 typedef MathOperation = num Function(num a, num b);
 
-class NeoMathExpression {
+class MathExpression {
   final ValuesTuple values;
   final OpsTuple ops;
   final OperationOrder _order;
 
-  NeoMathExpression(this.values, this.ops, this._order);
+  MathExpression(this.values, this.ops, this._order);
 
   T _executeInOrder<T>(
     (T, T, T, T) valuesTuple,

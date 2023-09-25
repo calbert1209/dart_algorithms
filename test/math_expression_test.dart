@@ -1,5 +1,5 @@
 import 'package:dart_algorithms/mathExpression/operation.dart';
-import 'package:dart_algorithms/mathExpression/neo_math_expression.dart';
+import 'package:dart_algorithms/mathExpression/math_expression.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -14,7 +14,7 @@ void main() {
         );
 
         // 1 + ( ( 2 * 3 ) + 4 ) = 11
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           values,
           ops,
           OperationOrder.yzx,
@@ -31,7 +31,7 @@ void main() {
         );
 
         // (1 + 2) + (3 * 4) = 15
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           values,
           ops,
           OperationOrder.xzy,
@@ -48,7 +48,7 @@ void main() {
         );
 
         // (1 / 2) * (3 * 4) = 6.0
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           values,
           ops,
           OperationOrder.xzy,
@@ -65,7 +65,7 @@ void main() {
         );
 
         // (4 * (1 - (2 * 3))) = -20
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           (4, 1, 2, 3),
           ops,
           OperationOrder.zyx,
@@ -82,7 +82,7 @@ void main() {
         );
 
         // 1 / ((2 * 3) - 6) = 1 / 0
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           (1, 2, 3, 6),
           ops,
           OperationOrder.yzx,
@@ -101,7 +101,7 @@ void main() {
         );
 
         // (1 / 2) * (3 * 4) = 6.0
-        final mathExp = NeoMathExpression(
+        final mathExp = MathExpression(
           values,
           ops,
           OperationOrder.xzy,
