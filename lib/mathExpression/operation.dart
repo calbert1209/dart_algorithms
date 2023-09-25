@@ -1,17 +1,8 @@
-import 'dart:math';
-
 enum OperationType {
   multiply,
   divide,
   add,
   subtract,
-}
-
-enum OperationPriority {
-  low,
-  medium,
-  high,
-  highest,
 }
 
 class Operation {
@@ -30,9 +21,8 @@ class Operation {
   };
 
   final OperationType type;
-  final bool weak;
 
-  Operation(this.type, {this.weak = false});
+  Operation(this.type);
 
   String toOperationString(dynamic a, dynamic b) {
     return '( ${a.toString()} ${operandSymbol[type]} ${b.toString()} )';
@@ -42,37 +32,17 @@ class Operation {
     return mathOp[type]!(a, b);
   }
 
-  OperationPriority get priority {
-    switch (type) {
-      case OperationType.multiply:
-      case OperationType.divide:
-        return weak ? OperationPriority.medium : OperationPriority.highest;
-      case OperationType.add:
-      case OperationType.subtract:
-        return weak ? OperationPriority.low : OperationPriority.high;
-      default:
-        throw Exception('invalid type: $type');
-    }
-  }
-
   static Operation fromOpString(String op) {
-    switch (op) {
-      case 'Mul':
-        return Operation(OperationType.multiply, weak: false);
-      case 'Div':
-        return Operation(OperationType.divide, weak: false);
-      case 'Add':
-        return Operation(OperationType.add, weak: false);
-      case 'Sub':
-        return Operation(OperationType.subtract, weak: false);
+    final lowerCaseOp = op.toLowerCase();
+    switch (lowerCaseOp) {
       case 'mul':
-        return Operation(OperationType.multiply, weak: true);
+        return Operation(OperationType.multiply);
       case 'div':
-        return Operation(OperationType.divide, weak: true);
+        return Operation(OperationType.divide);
       case 'add':
-        return Operation(OperationType.add, weak: true);
+        return Operation(OperationType.add);
       case 'sub':
-        return Operation(OperationType.subtract, weak: true);
+        return Operation(OperationType.subtract);
       default:
         throw Exception('Invalid op string: "$op"');
     }

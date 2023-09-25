@@ -26,7 +26,7 @@ void main() {
       test('basic (2)', () {
         final ops = (
           Operation.fromOpString('Add'),
-          Operation.fromOpString('add'),
+          Operation.fromOpString('Add'),
           Operation.fromOpString('Mul'),
         );
 

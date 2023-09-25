@@ -2,7 +2,7 @@ import 'package:dart_algorithms/mathExpression/operation.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group((Operation).toString(), () {
+  group('Operation', () {
     group('constructor', () {
       test('constructor with default args', () {
         final op = Operation(OperationType.multiply);
@@ -11,24 +11,14 @@ void main() {
           equals(OperationType.multiply),
           reason: 'type should match',
         );
-        expect(
-          op.weak,
-          equals(false),
-          reason: 'should be false',
-        );
       });
 
       test('constructor with explicit weak arg', () {
-        final op = Operation(OperationType.divide, weak: true);
+        final op = Operation(OperationType.divide);
         expect(
           op.type,
           equals(OperationType.divide),
           reason: 'type should match',
-        );
-        expect(
-          op.weak,
-          equals(true),
-          reason: '`weak` should be true',
         );
       });
 
@@ -39,11 +29,6 @@ void main() {
           equals(OperationType.add),
           reason: 'should parse correct type',
         );
-        expect(
-          strongAdd.weak,
-          equals(false),
-          reason: 'should parse as strong operation',
-        );
       });
 
       test('fromOpString pseudo constructor "sub"', () {
@@ -52,11 +37,6 @@ void main() {
           weakSub.type,
           equals(OperationType.subtract),
           reason: 'should parse correct type',
-        );
-        expect(
-          weakSub.weak,
-          equals(true),
-          reason: 'should parse as strong operation',
         );
       });
     });
@@ -79,24 +59,6 @@ void main() {
           opResult,
           equals(42),
           reason: 'should execute operation',
-        );
-      });
-
-      test('priority - strong multiply', () {
-        final mul = Operation(OperationType.multiply);
-        expect(
-          mul.priority,
-          equals(OperationPriority.highest),
-          reason: 'should return highest priority',
-        );
-      });
-
-      test('priority - weak multiply', () {
-        final mul = Operation(OperationType.multiply, weak: true);
-        expect(
-          mul.priority,
-          equals(OperationPriority.medium),
-          reason: 'should return medium priority',
         );
       });
     });

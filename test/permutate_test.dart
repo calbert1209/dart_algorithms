@@ -4,7 +4,7 @@ import 'permutation_example_lists.dart' as samples;
 import 'test_utilities.dart';
 
 void main() {
-  group((Permutator).toString(), () {
+  group('Permutator', () {
     test('constructor', () {
       final seedList = [1, 2, 3, 4];
       final p = Permutator(seedList);
