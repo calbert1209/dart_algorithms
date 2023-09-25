@@ -32,6 +32,10 @@ class Operation {
     return mathOp[type]!(a, b);
   }
 
+  String toString() {
+    return operandSymbol[type] ?? "?";
+  }
+
   static Operation fromOpString(String op) {
     final lowerCaseOp = op.toLowerCase();
     switch (lowerCaseOp) {

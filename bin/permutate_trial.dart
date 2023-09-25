@@ -1,3 +1,4 @@
+import 'package:dart_algorithms/mathExpression/math_expression.dart';
 import 'package:dart_algorithms/mathExpression/operation.dart';
 import 'package:dart_algorithms/permutation/permutate.dart';
 
@@ -19,7 +20,7 @@ void reportAnswers(OptionDict options) {
   for (var key in sortedKeysByValueCount) {
     print('::: $key (${options[key]!.length}) '.padRight(40, ':'));
     for (var exp in options[key]!) {
-      print(exp.substring(2, 23));
+      print(exp);
     }
 
     print('');
@@ -51,14 +52,20 @@ void main() {
     'Div',
     'Add',
     'Sub',
-    'mul',
-    'div',
-    'add',
-    'sub',
   ]);
 
-  final valueLists = valueP.permutate(4, pickOnce: true);
+  final valueLists = valueP.permutate(4, pickOnce: true).map((list) {
+    final [a, b, c, d] = list;
+    return (a, b, c, d);
+  });
   final opsLists = opsP.permutate(3, pickOnce: false);
+  final orders = [
+    OperationOrder.xyz,
+    OperationOrder.xzy,
+    OperationOrder.yxz,
+    OperationOrder.yzx,
+    OperationOrder.zyx,
+  ];
 
   OptionDict options = {};
 
@@ -70,24 +77,25 @@ void main() {
     options[value]!.add(expression);
   }
 
-  // for (var opsList in opsLists) {
-  //   for (var valueList in valueLists) {
-  //     final ops = opsList.map((e) => Operation.fromOpString(e)).toList();
-  //     // final priorities = ops.map((e) => e.priority.index).toList();
-  //     final exp = MathExpression.create(valueList, ops);
+  for (var opsList in opsLists) {
+    for (var valueList in valueLists) {
+      for (var order in orders) {
+        final [x, y, z] =
+            opsList.map((e) => Operation.fromOpString(e)).toList();
+        final ops = (x, y, z);
 
-  //     final evaluatedResult = exp.evaluate();
-  //     final expressionString = exp.toExpressionString();
-  //     // print(
-  //     //     '${valueList.join(',')} ${opsList.join(',')} $evaluatedResult ${priorities.join(',')} $expressionString');
-  //     if (evaluatedResult.isFinite &&
-  //         !evaluatedResult.isNaN &&
-  //         evaluatedResult.toInt() == evaluatedResult) {
-  //       addOption(evaluatedResult, expressionString);
-  //     }
-  //   }
-  // }
+        final exp = MathExpression(valueList, ops, order);
+        final evaluatedResult = exp.evaluate();
+        final expressionString = exp.toExpressionString();
+        if (evaluatedResult.isFinite &&
+            !evaluatedResult.isNaN &&
+            evaluatedResult.toInt() == evaluatedResult) {
+          addOption(evaluatedResult, expressionString);
+        }
+      }
+    }
+  }
 
-  // reportCounts(options);
-  // reportAnswers(options);
+  reportCounts(options);
+  reportAnswers(options);
 }
