@@ -70,24 +70,24 @@ void main() {
     options[value]!.add(expression);
   }
 
-  for (var opsList in opsLists) {
-    for (var valueList in valueLists) {
-      final ops = opsList.map((e) => Operation.fromOpString(e)).toList();
-      // final priorities = ops.map((e) => e.priority.index).toList();
-      final exp = MathExpression.create(valueList, ops);
+  // for (var opsList in opsLists) {
+  //   for (var valueList in valueLists) {
+  //     final ops = opsList.map((e) => Operation.fromOpString(e)).toList();
+  //     // final priorities = ops.map((e) => e.priority.index).toList();
+  //     final exp = MathExpression.create(valueList, ops);
 
-      final evaluatedResult = exp.evaluate();
-      final expressionString = exp.toExpressionString();
-      // print(
-      //     '${valueList.join(',')} ${opsList.join(',')} $evaluatedResult ${priorities.join(',')} $expressionString');
-      if (evaluatedResult.isFinite &&
-          !evaluatedResult.isNaN &&
-          evaluatedResult.toInt() == evaluatedResult) {
-        addOption(evaluatedResult, expressionString);
-      }
-    }
-  }
+  //     final evaluatedResult = exp.evaluate();
+  //     final expressionString = exp.toExpressionString();
+  //     // print(
+  //     //     '${valueList.join(',')} ${opsList.join(',')} $evaluatedResult ${priorities.join(',')} $expressionString');
+  //     if (evaluatedResult.isFinite &&
+  //         !evaluatedResult.isNaN &&
+  //         evaluatedResult.toInt() == evaluatedResult) {
+  //       addOption(evaluatedResult, expressionString);
+  //     }
+  //   }
+  // }
 
-  reportCounts(options);
-  reportAnswers(options);
+  // reportCounts(options);
+  // reportAnswers(options);
 }
