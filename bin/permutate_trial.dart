@@ -1,4 +1,4 @@
-import 'package:dart_algorithms/mathExpression/math_expression.dart';
+import 'package:dart_algorithms/mathExpression/operation.dart';
 import 'package:dart_algorithms/permutation/permutate.dart';
 
 typedef OptionDict = Map<num, List<String>>;
