@@ -13,5 +13,5 @@ void main(List<String> args) {
   final mathExp = MathExpression(values, ops, order);
   final result = mathExp.evaluate();
   final process = mathExp.toExpressionString();
-  print('${process} = $result');
+  print('$process = $result');
 }

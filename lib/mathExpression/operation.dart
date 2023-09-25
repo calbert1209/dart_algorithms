@@ -32,6 +32,7 @@ class Operation {
     return mathOp[type]!(a, b);
   }
 
+  @override
   String toString() {
     return operandSymbol[type] ?? "?";
   }
